@@ -1,0 +1,9 @@
+[submodule "external/rust-zmq"]
+	path = external/rust-zmq
+	url = git@github.com:smvv/rust-zmq
+[submodule "external/rust-tnetstring"]
+	path = external/rust-tnetstring
+	url = git@github.com:smvv/rust-tnetstring
+[submodule "external/rust-mongrel2"]
+	path = external/rust-mongrel2
+	url = git@github.com:smvv/rust-mongrel2

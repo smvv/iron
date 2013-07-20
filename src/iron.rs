@@ -3,11 +3,7 @@
 
 #[crate_type="lib"];
 
-mod app;
-mod env;
+pub mod app;
+pub mod env;
 
 pub type Env <'self> = env::Env <'self>;
-
-pub fn app(routes: ~[(~str, app::CallbackFn)]) -> app::App {
-    app::App {routes: routes}
-}
