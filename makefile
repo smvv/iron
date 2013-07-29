@@ -1,4 +1,5 @@
 RUSTC ?= rustc
+RUSTDOC ?= rustdoc
 RUSTFLAGS = -O --out-dir=$(@D) -Lbuild -Lbuild/external
 IRON_CRATE = src/iron.rs
 IRON_LIB := build/libiron.so
@@ -6,9 +7,14 @@ IRON_LIB := build/libiron.so
 DEMOS := \
 	build/demo/header_dump
 
+DOCS := \
+	build/doc/iron
+
 all:
 
 test: RUSTFLAGS += --test
+
+doc: $(DOCS)
 
 build/lib%.so: src/%.rs
 	rm -f $(@D)/lib$*-*.so
@@ -26,11 +32,15 @@ build/%: src/%.rs
 clean:
 	rm -rf build
 
+build/doc/%: src/%.rs
+	$(RUSTDOC) --output-dir $(@D) $<
+
 # --- Directory creation ------------------------------------------------------
 
 DIRS := \
 	build/external \
 	build/demo \
+	build/doc \
 
 $(DIRS):
 	mkdir -p $(DIRS)
@@ -50,7 +60,7 @@ build/external/libmongrel2.so: external/rust-mongrel2/mongrel2.rc \
 
 $(IRON_LIB): $(DEPS)
 $(DEMOS): $(IRON_LIB)
-all $(IRON_LIB) $(DEMOS): | $(DIRS)
+all doc $(IRON_LIB) $(DEMOS): | $(DIRS)
 all: $(IRON_LIB) $(DEMOS)
 
 $(IRON_LIB): \
