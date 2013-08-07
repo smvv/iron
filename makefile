@@ -21,7 +21,7 @@ build/lib%.so: src/%.rs
 	$(RUSTC) $(RUSTFLAGS) --lib $<
 	ln -sf `basename $(@D)/lib$*-*.so` $@
 
-build/external/lib%.so:
+build/external/lib%.so: external/rust-%/lib.rs
 	rm -f $(@D)/lib$*-*.so $(@D)/lib$*.so
 	$(RUSTC) $(RUSTFLAGS) --lib $<
 	ln -sf `basename $(@D)/lib$*-*.so` $@
@@ -52,9 +52,7 @@ DEPS := \
 	build/external/libtnetstring.so \
 	build/external/libmongrel2.so \
 
-build/external/libzmq.so: external/rust-zmq/lib.rs
-build/external/libtnetstring.so: external/rust-tnetstring/lib.rs
-build/external/libmongrel2.so: external/rust-mongrel2/mongrel2.rc \
+build/external/libmongrel2.so: \
 	build/external/libzmq.so \
 	build/external/libtnetstring.so
 
