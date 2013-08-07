@@ -11,7 +11,6 @@ pub type Routes = ~[(~str, CallbackFn)];
 pub struct App {
     routes: ~[(~str, CallbackFn)],
     sender_id: Option<~str>,
-    ctx: zmq::Context,
     conn: mongrel2::Connection,
 }
 
@@ -21,15 +20,9 @@ impl App {
     /// Construct a new web application
     pub fn new(sender_id: Option<~str>, routes: Routes,
                req_addrs: ~[~str], rep_addrs: ~[~str]) -> App {
-        let ctx = match zmq::init(1) {
-            Ok(ctx) => ctx,
-            Err(e) => fail!(e.to_str()),
-        };
-
-        let conn = mongrel2::connect(ctx, sender_id.clone(), req_addrs,
-                                     rep_addrs);
-
-        App {routes: routes, sender_id: sender_id, ctx: ctx, conn: conn}
+        let conn = mongrel2::connect(zmq::Context::new(), sender_id.clone(),
+                                     req_addrs, rep_addrs);
+        App {routes: routes, sender_id: sender_id, conn: conn}
     }
 
     /// Start the main loop of a web application

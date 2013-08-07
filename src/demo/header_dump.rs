@@ -11,8 +11,8 @@ fn demo(env: &Env) {
     println(fmt!("demo received id: %s", request.id));
     println(fmt!("demo received path: %s", request.path));
 
-    for request.headers.iter().advance |(k, vs)| {
-        for vs.iter().advance |v| {
+    for (k, vs) in request.headers.iter() {
+        for v in vs.iter() {
             println(fmt!("demo received header: %s => %s", *k, *v));
         }
     };
